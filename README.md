@@ -59,17 +59,18 @@ using this setup for too much.
 that host both OSD and MON, MGR, etc... services; (4) a RBD client node that mounts an RBD pool as
 a regular ext4 file system and exports the file system over regular NFS.
 
-```commands```	
+```commands```	- a list of commands used by hand to get things running. Most of these could be in a 
+set of provision scripts.
 
-```createhosts.sh```	
+```createhosts.sh``` - a provisioning shell script that installs a /etc/hosts file on each of the vagrant VMs. 
 
-```getml.sh```	
+```getml.sh```	- a provisioning shell script that gets a list of the vagrant VMs that have been instantiated. 
 
-```preflight-all.scr```	
-```preflight-all.sh```	
+```preflight-all.scr```	- commands that do some distribtuion specific provisioning steps for all the VMs.
+```preflight-all.sh```	- a provisioing shell script that executes the steps in ```preflight-all.scr```.
 
-```preflight.scr```	
-```preflight.sh```	
+```preflight.scr```	- commands that do some distribtuion specific provisioning steps for the admin VM.
+```preflight.sh```	- a provisioing shell script that executes the steps in ```preflight.scr```.
 
-```setmasterkey.sh```
+```setmasterkey.sh``` - a provisioing shell script that puts a common key for the admin node to use on all nodes.
 
