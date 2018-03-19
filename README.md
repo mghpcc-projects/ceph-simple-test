@@ -55,5 +55,21 @@ using this setup for too much.
 
 # Files
 
+```Vagrantfile```	- a vagrant setup that creates (1) a provisioner machine; (2) three Ceph nodes
+that host both OSD and MON, MGR, etc... services; (4) a RBD client node that mounts an RBD pool as
+a regular ext4 file system and exports the file system over regular NFS.
 
+```commands```	
+
+```createhosts.sh```	
+
+```getml.sh```	
+
+```preflight-all.scr```	
+```preflight-all.sh```	
+
+```preflight.scr```	
+```preflight.sh```	
+
+```setmasterkey.sh```
 
