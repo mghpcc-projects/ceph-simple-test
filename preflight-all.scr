@@ -1,0 +1,2 @@
+sudo apt install ntp -y
+sudo apt install openssh-server -y

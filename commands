@@ -1,0 +1,70 @@
+
+cd $WORKDIR
+mkdir .vagrant.d
+export VAGRANT_HOME=`pwd`/.vagrant.d
+mkdir ../'VirtualBox VMs'
+(
+cd ..
+VBoxManage setproperty machinefolder `pwd`'/VirtualBox VMs'
+)
+vagrant plugin install vagrant-vbguest
+vagrant box add debian/contrib-stretch64
+vagrant up
+./getml.sh
+./createhosts.sh
+./setmasterkey.sh
+./preflight.sh
+./preflight-all.sh
+
+ 
+# Commands run on so-called ceph-ansible-node
+mkdir myceph
+cd myceph/
+ceph-deploy new ceph-osd0 
+vi ceph.conf # Add "public network = 192.168.42.0/24"
+ceph-deploy install ceph-osd0 ceph-osd1 ceph-osd2 --release luminous
+ceph-deploy mon create-initial
+ceph-deploy admin ceph-osd0 ceph-osd1 ceph-osd2
+ceph-deploy mgr create ceph-osd0
+ceph-deploy osd create --data /dev/sdb ceph-osd0
+ceph-deploy osd create --data /dev/sdb ceph-osd1
+ceph-deploy osd create --data /dev/sdb ceph-osd2
+ssh ceph-osd0 sudo ceph health
+ssh ceph-osd0 sudo ceph -s
+ceph-deploy mds create ceph-osd0
+ceph-deploy mon add ceph-osd1
+ceph-deploy mon add ceph-osd2
+ssh ceph-osd0 sudo ceph -s
+ceph-deploy mgr create ceph-osd1
+ceph-deploy mgr create ceph-osd2
+ssh ceph-osd0 sudo ceph -s
+ceph-deploy rgw create ceph-osd0
+ssh ceph-osd0 sudo ceph -s
+ssh ceph-osd0
+ssh ceph-osd0 sudo ceph -s
+ceph-deploy install ceph-nexp0 --release luminous
+ceph-deploy admin ceph-nexp0
+ssh ceph-osd0
+ssh ceph-nexp0
+ssh ceph-osd0
+ssh ceph-nexp0
+ 
+# Commands run on ceph-osd0 (master node)
+sudo ceph osd pool create mytest 8
+sudo rados put test-object-1 preflight-all.scr --pool=mytest
+sudo rados -p mytest ls
+sudo ceph osd map mytest test-object-1
+ceph osd pool create rdb 8
+ceph mgr module enable dashboard
+
+# Commands run on ceph-nexp0 (mounts rbd for NFS export)
+rbd create foo --size 4096 --image-feature layering -p rdb
+rbd map foo --name client.admin -p rdb
+mkfs.ext4 -m0 /dev/rbd/rdb/foo
+mkdir /mnt/ceph-block-device
+mount /dev/rbd/rdb/foo /mnt/ceph-block-device
+cd /mnt/ceph-block-device/
+dd of=foo if=/dev/zero bs=1M count=100
+
+
+
