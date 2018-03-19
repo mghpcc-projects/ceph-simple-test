@@ -24,7 +24,7 @@ this problem appears to have persisted for more than two years.
 # Lessons so far trying ceph-ansible
 
 Another possible approach is ceph-ansible - https://github.com/ceph/ceph-ansible. This is an important
-go to location for production Ceph deployments. For learning the ceph-ansible system is quite complicated.
+go to location for production Ceph deployments. For learning, the ceph-ansible system is quite complicated.
 There are many YAML configuration files, only a few of which need site settings. The documentation
 at http://docs.ceph.com/ceph-ansible/master/ is relatively sparse. 
 
@@ -49,6 +49,11 @@ ceph-deploy install {node} --release luminous
 
 A vagrant setup, command notes and helper scripts for testing this way have been
 archived in this repo.
+
+The current Debian NTP setup is generating some errors that should be fixed before
+using this setup for too much.
+
+# Files
 
 
 
