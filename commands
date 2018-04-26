@@ -10,6 +10,7 @@ VBoxManage setproperty machinefolder `pwd`'/VirtualBox VMs'
 vagrant plugin install vagrant-vbguest
 vagrant box add debian/contrib-stretch64
 # vagrant init --force
+# in simple cases for vagrant a vagrant init is used. Here we have a saved "Vagrantfile" with several machines.
 vagrant up
 ./getml.sh
 ./createhosts.sh
